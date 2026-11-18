@@ -27,6 +27,10 @@ public class GrifoSaunaBehaviour : MonoBehaviour
 
 	private FsmBool m_guiUseBool;
 
+	private bool drink3Running;
+
+	private bool drink4Running;
+
 	public bool grifoabiertosauna;
 
 	public bool lleno;
@@ -149,16 +153,19 @@ public class GrifoSaunaBehaviour : MonoBehaviour
 			{
 				Player = GameObject.Find("PLAYER").gameObject;
 			}
-			RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+			if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.root.position) <= 60f)
+		{
+		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 			foreach (RaycastHit hit in array)
 			{
 				RayGrifo(hit);
 			}
-			if (grifoabiertosauna)
+		}
+			if (grifoabiertosauna && !drink3Running)
 			{
 				((MonoBehaviour)this).StartCoroutine(Drink3());
 			}
-			if (lleno)
+			if (lleno && !drink4Running)
 			{
 				((MonoBehaviour)this).StartCoroutine(Drink4());
 			}
@@ -177,6 +184,7 @@ public class GrifoSaunaBehaviour : MonoBehaviour
 
 	private IEnumerator Drink3()
 	{
+		drink3Running = true;
 		yield return (object)new WaitForSeconds(0.5f);
 		float num = alturaagua.localPosition.z + 0.0001f;
 		if (alturaagua.localPosition.z <= 0.1f)
@@ -188,10 +196,12 @@ public class GrifoSaunaBehaviour : MonoBehaviour
 			alturaagua.localPosition = new Vector3(0f, 0f, 0.1f);
 			lleno = true;
 		}
+		drink3Running = false;
 	}
 
 	private IEnumerator Drink4()
 	{
+		drink4Running = true;
 		yield return (object)new WaitForSeconds(0.5f);
 		float num = alturaagua.localPosition.z - 1E-05f;
 		if (alturaagua.localPosition.z > 0f)
@@ -203,5 +213,6 @@ public class GrifoSaunaBehaviour : MonoBehaviour
 			alturaagua.localPosition = new Vector3(0f, 0f, 0f);
 			lleno = false;
 		}
+		drink4Running = false;
 	}
 }
