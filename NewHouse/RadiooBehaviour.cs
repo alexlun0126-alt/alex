@@ -264,11 +264,11 @@ public class RadiooBehaviour : MonoBehaviour
 		{
 			_playerInMenu.Value = true;
 		}
-		if (!Object.op_Implicit((Object)(object)Player))
+		if (Player == null)
 		{
 			Player = GameObject.Find("PLAYER").gameObject;
 		}
-		if (Object.op_Implicit((Object)(object)Player))
+		if (Player != null)
 		{
 			if (electricidad.electricidadon)
 			{
