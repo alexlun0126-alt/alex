@@ -123,7 +123,7 @@ public class NewHouse : Mod
 
 	public static string SaveFilePathorder => Path.Combine(configPath, "NewHouse-order.save");
 
-	public override void OnSave()
+	private void OnSave()
 	{
 		if (casasave.vendido)
 		{
@@ -279,13 +279,13 @@ public class NewHouse : Mod
 		}
 	}
 
-	public override void ModSettings()
+	private void ModSettings()
 	{
 		Settings.AddButton((Mod)(object)this, borrarsaves, "ATTENTION: clean saves mod, means buying the house again.");
 		Settings.AddButton((Mod)(object)this, borrarsaves2, "ATTENTION: use this option in the menu and then load the game.");
 	}
 
-	public override void OnMenuLoad()
+	private void OnMenuLoad()
 	{
 		//IL_004a: Unknown result type (might be due to invalid IL or missing references)
 		m_instance = this;
@@ -301,7 +301,7 @@ public class NewHouse : Mod
 		}
 	}
 
-	public override void Update()
+	private void Update()
 	{
 		//IL_0021: Unknown result type (might be due to invalid IL or missing references)
 		try
