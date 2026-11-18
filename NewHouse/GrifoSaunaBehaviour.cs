@@ -31,6 +31,12 @@ public class GrifoSaunaBehaviour : MonoBehaviour
 
 	private bool drink4Running;
 
+	private bool drink2Running;
+
+	private bool grifoRunning;
+
+	private bool cuboRunning;
+
 	public bool grifoabiertosauna;
 
 	public bool lleno;
@@ -56,7 +62,7 @@ public class GrifoSaunaBehaviour : MonoBehaviour
 
 	private void OnBagTriggerStay(Collider collider)
 	{
-		if (((Object)collider).name == ((Object)Player).name && lleno && ((Component)((Component)this).transform.root).GetComponent<ElectricidadBehaviour>().electricidadon)
+		if (((Object)collider).name == ((Object)Player).name && lleno && !drink2Running && ((Component)((Component)this).transform.root).GetComponent<ElectricidadBehaviour>().electricidadon)
 		{
 			((MonoBehaviour)this).StartCoroutine(Drink2());
 		}
@@ -71,39 +77,45 @@ public class GrifoSaunaBehaviour : MonoBehaviour
 			{
 				if (val.FsmName == "Crouch" && val.FsmVariables.FindFsmFloat("Position").Value == 0.3f)
 				{
-					((MonoBehaviour)this).StartCoroutine(Grifo());
+					if (!grifoRunning) ((MonoBehaviour)this).StartCoroutine(Grifo());
 				}
 			}
 		}
 		if (((Object)collider).name == "bucket(itemx)" && grifoabiertosauna)
 		{
-			((MonoBehaviour)this).StartCoroutine(LLenaCubo(collider));
+			if (!cuboRunning) ((MonoBehaviour)this).StartCoroutine(LLenaCubo(collider));
 		}
 	}
 
 	private IEnumerator Grifo()
 	{
+		grifoRunning = true;
 		yield return (object)new WaitForSeconds(0.5f);
 		FsmFloat val = FsmVariables.GlobalVariables.FindFsmFloat("PlayerThirst");
 		val.Value -= 0.4f;
 		FsmFloat val2 = FsmVariables.GlobalVariables.FindFsmFloat("PlayerUrine");
 		val2.Value += 0.1f;
+		grifoRunning = false;
 	}
 
 	private IEnumerator LLenaCubo(Collider collider)
 	{
+		cuboRunning = true;
 		yield return (object)new WaitForSeconds(0.5f);
 		FsmFloat fsmFloat = ((Component)collider).GetComponent<PlayMakerFSM>().FsmVariables.GetFsmFloat("Water");
 		fsmFloat.Value += 0.01f;
+		cuboRunning = false;
 	}
 
 	private IEnumerator Drink2()
 	{
+		drink2Running = true;
 		yield return (object)new WaitForSeconds(0.5f);
 		FsmFloat val = FsmVariables.GlobalVariables.FindFsmFloat("PlayerStress");
 		val.Value -= 0.05f;
 		FsmFloat val2 = FsmVariables.GlobalVariables.FindFsmFloat("PlayerDirtiness");
 		val2.Value -= 0.09f;
+		drink2Running = false;
 	}
 
 	private void RayGrifo(RaycastHit hit)
