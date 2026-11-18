@@ -1,0 +1,49 @@
+name: Build optimized NewHouse DLL
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'NewHouse/**'
+      - 'NewHouse.csproj'
+      - '.github/workflows/build-newhouse-optimized.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout optimized source
+        uses: actions/checkout@v4
+
+      - name: Checkout reference assemblies
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: _reference_source
+
+      - name: Prepare reference assemblies
+        shell: bash
+        run: |
+          mkdir -p refs
+          cp _reference_source/Assembly-CSharp.dll refs/
+          cp _reference_source/UnityEngine.dll refs/
+          cp _reference_source/MSCLoader.dll refs/
+          cp _reference_source/PlayMaker.dll refs/
+          cp _reference_source/cInput.dll refs/
+          ls -lh refs
+
+      - name: Build NewHouse
+        run: dotnet build NewHouse.csproj --configuration Release
+
+      - name: Upload compiled DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: NewHouse-static-batching-test
+          path: bin/Release/net35/NewHouse.dll
+          if-no-files-found: error
+          retention-days: 14
