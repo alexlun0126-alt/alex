@@ -120,6 +120,9 @@ public class ModBehaviour : MonoBehaviour
 			}
 
 			renderer.gameObject.isStatic = true;
+			// Static house geometry does not need to cast real-time shadows.
+			// This reduces shadow-map rendering cost while preserving meshes and colliders.
+			renderer.castShadows = false;
 			batchable++;
 		}
 
