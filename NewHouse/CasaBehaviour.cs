@@ -624,7 +624,7 @@ public class CasaBehaviour : MonoBehaviour
 		((Component)val.transform.FindChild("DoorBathroom")).gameObject.SetActive(false);
 		val.transform.position = new Vector3(-1720.32f, 7.9204f, -185.7f);
 		val.transform.eulerAngles = new Vector3(270f, 220f, 0f);
-		if (Object.op_Implicit((Object)(object)GameObject.Find("YARD/Building/KITCHEN/KitchenWaterTap")))
+		if (GameObject.Find("YARD/Building/KITCHEN/KitchenWaterTap") != null)
 		{
 			grifococina2 = GameObject.Find("YARD/Building/KITCHEN/KitchenWaterTap").gameObject;
 			grifococina3 = Object.Instantiate<GameObject>(grifococina2);
@@ -653,11 +653,11 @@ public class CasaBehaviour : MonoBehaviour
 		bistecc.AddComponent<BistecBehaviour>();
 		((Component)this).gameObject.AddComponent<VendedorBistecBehaviour>();
 		partes = ((Component)this).gameObject.AddComponent<TodoItemBehaviour>();
-		if (Object.op_Implicit((Object)(object)GameObject.Find("MAP/MESH/FOLIAGE/BUSHES6")))
+		if (GameObject.Find("MAP/MESH/FOLIAGE/BUSHES6") != null)
 		{
 			GameObject.Find("MAP/MESH/FOLIAGE/BUSHES6").gameObject.SetActive(false);
 		}
-		if (Object.op_Implicit((Object)(object)GameObject.Find("YARD/Building/Dynamics/SuomiClock/Clock")))
+		if (GameObject.Find("YARD/Building/Dynamics/SuomiClock/Clock") != null)
 		{
 			GameObject gameObject = GameObject.Find("YARD/Building/Dynamics/SuomiClock/Clock").gameObject;
 			GameObject gameObject2 = ((Component)((Component)this).transform.FindChild("utiles/posireloj")).gameObject;
@@ -708,7 +708,7 @@ public class CasaBehaviour : MonoBehaviour
 		pelotaclone.transform.SetParent(posirevista.transform);
 		pelotaclone.transform.localPosition = new Vector3(0f, 0.2f, 0f);
 		pelotaclone.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-		if (Object.op_Implicit((Object)(object)GameObject.Find("YARD/PlayerMailBox")))
+		if (GameObject.Find("YARD/PlayerMailBox") != null)
 		{
 			GameObject gameObject5 = GameObject.Find("YARD/PlayerMailBox").gameObject;
 			correo = Object.Instantiate<GameObject>(gameObject5);
