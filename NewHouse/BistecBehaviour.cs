@@ -328,7 +328,7 @@ public class BistecBehaviour : MonoBehaviour
 
 	private void OnTriggerStayparrilla(Collider collider)
 	{
-		if (Object.op_Implicit((Object)(object)((Component)collider).gameObject.GetComponent<FileteBehaviour>()) && !añadidocarne && ((Component)collider).gameObject.GetComponent<FileteBehaviour>().crudo)
+		if (((Component)collider).gameObject.GetComponent<FileteBehaviour>() != null && !añadidocarne && ((Component)collider).gameObject.GetComponent<FileteBehaviour>().crudo)
 		{
 			storechuleta = ((Component)collider).gameObject;
 			((Component)collider).gameObject.SetActive(false);
