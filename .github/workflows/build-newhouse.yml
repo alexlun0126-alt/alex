@@ -6,6 +6,10 @@ on:
       - fix/newhouse-performance
   workflow_dispatch:
 
+concurrency:
+  group: build-newhouse-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
