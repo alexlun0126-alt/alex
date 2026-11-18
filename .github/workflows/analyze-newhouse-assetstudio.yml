@@ -25,22 +25,24 @@ jobs:
           git clone --depth 1 https://github.com/Razviar/assetstudio.git AssetStudio-src
           $bundlePath = 'AssetStudio-src/AssetStudio/BundleFile.cs'
           $bundleSource = Get-Content $bundlePath -Raw
-          $needle = 'blocksStream.CopyTo(file.stream, node.size);'
+          $managerPath = 'AssetStudio-src/AssetStudio/AssetsManager.cs'
+          $managerSource = Get-Content $managerPath -Raw
+          $needle = 'var bundleFile = new BundleFile(reader, Game);' + [Environment]::NewLine + [Environment]::NewLine + '                // Priority 2'
           $inject = [string]::Join("`n", @(
-            '                blocksStream.CopyTo(file.stream, node.size);',
-            '                file.stream.Position = 0;',
-            '                try',
+            'var bundleFile = new BundleFile(reader, Game);',
+            '                Logger.Info($"BUNDLE_NODES {bundleFile.fileList.Count}");',
+            '                foreach (var nodeFile in bundleFile.fileList)',
             '                {',
-            '                    var extractPath = Path.Combine(Path.GetDirectoryName(path), "inner_" + file.fileName);',
-            '                    using (var output = File.Create(extractPath)) { file.stream.CopyTo(output); }',
-            '                    file.stream.Position = 0;',
-            '                    Logger.Info($"INNER_FILE {file.fileName} SIZE {node.size} PATH {extractPath}");',
+            '                    var extractedPath = Path.Combine(Path.GetDirectoryName(reader.FullPath), "inner_" + Path.GetFileName(nodeFile.fileName));',
+            '                    using (var output = File.Create(extractedPath)) { nodeFile.stream.Position = 0; nodeFile.stream.CopyTo(output); nodeFile.stream.Position = 0; }',
+            '                    Logger.Info($"INNER_FILE {nodeFile.fileName} SIZE {new FileInfo(extractedPath).Length}");',
             '                }',
-            '                catch (Exception ex) { Logger.Error($"INNER_EXTRACT_ERROR {ex.Message}"); }'
+            '',
+            '                // Priority 2'
           ))
-          if (!$bundleSource.Contains($needle)) { throw 'Bundle extraction patch point not found' }
-          $bundleSource = $bundleSource.Replace($needle, $inject)
-          Set-Content -Path $bundlePath -Value $bundleSource -Encoding utf8
+          if (!$managerSource.Contains($needle)) { throw 'AssetsManager bundle patch point not found' }
+          $managerSource = $managerSource.Replace($needle, $inject)
+          Set-Content -Path $managerPath -Value $managerSource -Encoding utf8
           dotnet build AssetStudio-src/AssetStudio.CLI/AssetStudio.CLI.csproj -c Release -f net8.0-windows
       - name: Build asset inventory from Unity 5 bundle
         shell: pwsh
@@ -64,6 +66,7 @@ jobs:
           name: NewHouse-AssetStudio-inventory
           path: |
             asset-dump/
+            extracted/inner_*
             asset-analysis-summary.txt
             asset-analysis-map.xml
           if-no-files-found: error
