@@ -160,7 +160,7 @@ public class FileteBehaviour : MonoBehaviour
 		{
 			((MonoBehaviour)this).StopCoroutine(Comervalue());
 		}
-		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.position) <= 10f)
+		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.position) <= 10f)
 		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		foreach (RaycastHit hit in array)
