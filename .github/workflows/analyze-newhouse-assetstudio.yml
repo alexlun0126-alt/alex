@@ -61,18 +61,13 @@ jobs:
         run: |
           $cli = 'AssetStudio-src/AssetStudio.GUI/bin/Release/net8.0-windows/AssetStudio.CLI.exe'
           if (!(Test-Path $cli)) { throw "AssetStudio CLI not found: $cli" }
-          & $cli --game Normal --unity_version 5.0.0f4 --types Shader:None GameObject:Parse Mesh:Parse MeshRenderer:Parse SkinnedMeshRenderer:Parse MeshFilter:Parse MeshCollider:Parse BoxCollider:Parse SphereCollider:Parse CapsuleCollider:Parse Transform:Parse --map_op AssetMap --map_type XML extracted/newhouse.unity3d asset-dump
+          & $cli --game Normal --unity_version 5.0.0f4 --types Shader:None GameObject:Both Mesh:Both Material:Both Texture2D:Both Sprite:Both Animator:Both AudioClip:Both TextAsset:Both --export_type Dump extracted/newhouse.unity3d asset-dump
           if ($LASTEXITCODE -ne 0) { throw "AssetStudio exited with code $LASTEXITCODE" }
           $files = Get-ChildItem asset-dump -Recurse -File -ErrorAction SilentlyContinue
-          $xml = $files | Where-Object { $_.Extension -eq '.xml' }
           "EXPORTED_FILES=$($files.Count)" | Out-File asset-analysis-summary.txt
           $files | Group-Object Extension | ForEach-Object { "$($_.Name)=$($_.Count)" | Out-File asset-analysis-summary.txt -Append }
-          if (!$xml) { throw 'AssetStudio produced no XML asset map' }
-          Copy-Item $xml[0].FullName asset-analysis-map.xml -Force
-          [xml]$doc = Get-Content asset-analysis-map.xml -Raw
-          $assets = @($doc.SelectNodes('//Asset'))
-          "ASSET_ROWS=$($assets.Count)" | Out-File asset-analysis-summary.txt -Append
-          $assets | Group-Object { $_.SelectSingleNode('Type').InnerText } | Sort-Object Count -Descending | ForEach-Object { "$($_.Name)=$($_.Count)" | Out-File asset-analysis-summary.txt -Append }
+          if ($files.Count -eq 0) { throw 'AssetStudio exported no asset dumps' }
+          $files | Select-Object -First 100 FullName,Length | Format-Table -AutoSize | Out-File asset-analysis-summary.txt -Append
       - uses: actions/upload-artifact@v4
         with:
           name: NewHouse-AssetStudio-inventory
@@ -81,6 +76,5 @@ jobs:
             extracted/inner_*
             extracted/asset_debug.txt
             asset-analysis-summary.txt
-            asset-analysis-map.xml
           if-no-files-found: error
           retention-days: 7
