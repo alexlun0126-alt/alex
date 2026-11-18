@@ -103,6 +103,8 @@ public class RadiooBehaviour : MonoBehaviour
 
 	private ModAudio MAudio;
 
+	private bool drink3Running;
+
 	private void Start()
 	{
 		radioencendido = GameObject.Find("radioencendido").GetComponent<Collider>();
@@ -270,7 +272,9 @@ public class RadiooBehaviour : MonoBehaviour
 		{
 			if (electricidad.electricidadon)
 			{
-				RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+				if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.root.position) <= 60f)
+		{
+		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 				foreach (RaycastHit hit in array)
 				{
 					if (root.vendido && root.radiocomprada)
@@ -278,6 +282,7 @@ public class RadiooBehaviour : MonoBehaviour
 						RayRadio(hit);
 					}
 				}
+		}
 				if (root.vendido && root.radiocomprada)
 				{
 					SetupRadio();
@@ -316,9 +321,11 @@ public class RadiooBehaviour : MonoBehaviour
 
 	private IEnumerator Drink3()
 	{
+		drink3Running = true;
 		yield return (object)new WaitForSeconds(0.5f);
 		FsmFloat val = FsmVariables.GlobalVariables.FindFsmFloat("PlayerStress");
 		val.Value -= 0.03f;
+		drink3Running = false;
 	}
 
 	private void RayRadio(RaycastHit hit)
@@ -565,7 +572,7 @@ public class RadiooBehaviour : MonoBehaviour
 		//IL_0021: Unknown result type (might be due to invalid IL or missing references)
 		Volumen();
 		float num = Vector3.Distance(((Component)radioencendido).transform.position, Player.transform.position);
-		if (radioencendida && radioplay && num < 3f)
+		if (radioencendida && radioplay && num < 3f && !drink3Running)
 		{
 			((MonoBehaviour)this).StartCoroutine(Drink3());
 		}
