@@ -176,6 +176,8 @@ public class TelefonoBehaviour : MonoBehaviour
 			dardo6clone.SetActive(dardo6.activeSelf);
 			dardo7clone.SetActive(dardo7.activeSelf);
 		}
+		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.root.position) <= 60f)
+		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		foreach (RaycastHit hit in array)
 		{
@@ -184,6 +186,7 @@ public class TelefonoBehaviour : MonoBehaviour
 				SetupTelefono();
 				RayTelefono(hit);
 			}
+		}
 		}
 	}
 
