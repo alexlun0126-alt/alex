@@ -1,0 +1,45 @@
+name: Analyze NewHouse assets with AssetStudio
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'newhouse.part*.rar'
+      - '.github/workflows/analyze-newhouse-assetstudio.yml'
+jobs:
+  analyze:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Extract split RAR archive
+        shell: pwsh
+        run: |
+          7z x newhouse.part1.rar -oextracted -y
+          if (!(Test-Path 'extracted/newhouse.unity3d')) { throw 'Unity bundle not extracted' }
+          Get-Item 'extracted/newhouse.unity3d' | Format-List Length,FullName
+      - name: Get AssetStudio parser
+        shell: pwsh
+        run: |
+          git clone --depth 1 https://github.com/Razviar/assetstudio.git AssetStudio-src
+          dotnet build AssetStudio-src/AssetStudio.CLI/AssetStudio.CLI.csproj -c Release -f net8.0-windows
+      - name: Parse Unity 5 bundle and dump renderer/collider data
+        shell: pwsh
+        run: |
+          $cli = 'AssetStudio-src/AssetStudio.GUI/bin/Release/net8.0-windows/AssetStudio.CLI.exe'
+          if (!(Test-Path $cli)) { throw "AssetStudio CLI not found: $cli" }
+          & $cli --game Normal --unity_version 5.0.0f4 --types GameObject:Both MeshRenderer:Both SkinnedMeshRenderer:Both MeshCollider:Both BoxCollider:Both SphereCollider:Both CapsuleCollider:Both --export_type Dump extracted/newhouse.unity3d asset-dump
+          if ($LASTEXITCODE -ne 0) { throw "AssetStudio exited with code $LASTEXITCODE" }
+          $files = Get-ChildItem asset-dump -Recurse -File -ErrorAction SilentlyContinue
+          "EXPORTED_FILES=$($files.Count)" | Out-File asset-analysis-summary.txt
+          $files | Group-Object Extension | ForEach-Object { "$($_.Name)=$($_.Count)" | Out-File asset-analysis-summary.txt -Append }
+          if ($files.Count -eq 0) { throw 'AssetStudio produced no parsed asset dumps' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NewHouse-AssetStudio-dumps
+          path: |
+            asset-dump/
+            asset-analysis-summary.txt
+          if-no-files-found: error
+          retention-days: 7
