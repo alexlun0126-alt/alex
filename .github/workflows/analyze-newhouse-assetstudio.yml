@@ -27,6 +27,13 @@ jobs:
           $bundleSource = Get-Content $bundlePath -Raw
           $helperPath = 'AssetStudio-src/AssetStudio/AssetsHelper.cs'
           $helperSource = Get-Content $helperPath -Raw
+          $objectNeedle = '            var objectReader = new ObjectReader(assetsFile.reader, assetsFile, objInfo, assetsManager.Game);'
+          $objectInject = [string]::Join("`n", @(
+            '            var objectReader = new ObjectReader(assetsFile.reader, assetsFile, objInfo, assetsManager.Game);',
+            '                    if (objInfo.classID == 1 || objInfo.classID == 4 || objInfo.classID == 23 || objInfo.classID == 33 || objInfo.classID == 43 || objInfo.classID == 64 || objInfo.classID == 65) File.AppendAllText(Path.Combine(Path.GetDirectoryName(file), "object_types.txt"), objInfo.classID.ToString() + ":" + objectReader.type.ToString() + Environment.NewLine);'
+          ))
+          if (!$helperSource.Contains($objectNeedle)) { throw 'Object type patch point not found' }
+          $helperSource = $helperSource.Replace($objectNeedle, $objectInject)
           $helperNeedle = '            var matches = new List<AssetEntry>();'
           $helperInject = [string]::Join("`n", @(
             '            var matches = new List<AssetEntry>();',
@@ -75,6 +82,7 @@ jobs:
             asset-dump/
             extracted/inner_*
             extracted/asset_debug.txt
+            extracted/object_types.txt
             asset-analysis-summary.txt
           if-no-files-found: error
           retention-days: 7
