@@ -25,6 +25,10 @@ public class GrifoCocinaBehaviour : MonoBehaviour
 
 	private PlayMakerFSM[] playm;
 
+	private bool grifoRunning;
+
+	private bool cuboRunning;
+
 	public bool grifoabiertococina;
 
 	private void Start()
@@ -50,30 +54,34 @@ public class GrifoCocinaBehaviour : MonoBehaviour
 			{
 				if (val.FsmName == "Reach" && val.FsmVariables.FindFsmBool("Button").Value)
 				{
-					((MonoBehaviour)this).StartCoroutine(Grifo());
+					if (!grifoRunning) ((MonoBehaviour)this).StartCoroutine(Grifo());
 				}
 			}
 		}
 		if (((Object)collider).name == "bucket(itemx)" && grifoabiertococina)
 		{
-			((MonoBehaviour)this).StartCoroutine(LLenaCubo(collider));
+			if (!cuboRunning) ((MonoBehaviour)this).StartCoroutine(LLenaCubo(collider));
 		}
 	}
 
 	private IEnumerator Grifo()
 	{
+		grifoRunning = true;
 		yield return (object)new WaitForSeconds(0.2f);
 		FsmFloat val = FsmVariables.GlobalVariables.FindFsmFloat("PlayerThirst");
 		val.Value -= 0.4f;
 		FsmFloat val2 = FsmVariables.GlobalVariables.FindFsmFloat("PlayerUrine");
 		val2.Value += 0.1f;
+		grifoRunning = false;
 	}
 
 	private IEnumerator LLenaCubo(Collider collider)
 	{
+		cuboRunning = true;
 		yield return (object)new WaitForSeconds(0.5f);
 		FsmFloat fsmFloat = ((Component)collider).GetComponent<PlayMakerFSM>().FsmVariables.GetFsmFloat("Water");
 		fsmFloat.Value += 0.01f;
+		cuboRunning = false;
 	}
 
 	private void RayGrifo(RaycastHit hit)
@@ -118,11 +126,14 @@ public class GrifoCocinaBehaviour : MonoBehaviour
 			{
 				Player = GameObject.Find("PLAYER").gameObject;
 			}
-			RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+			if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.root.position) <= 60f)
+		{
+		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 			foreach (RaycastHit hit in array)
 			{
 				RayGrifo(hit);
 			}
+		}
 			if (grifoabiertococina)
 			{
 				grifococinaon.SetActive(true);
