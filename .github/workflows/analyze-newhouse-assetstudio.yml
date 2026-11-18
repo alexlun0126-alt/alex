@@ -25,6 +25,18 @@ jobs:
           git clone --depth 1 https://github.com/Razviar/assetstudio.git AssetStudio-src
           $bundlePath = 'AssetStudio-src/AssetStudio/BundleFile.cs'
           $bundleSource = Get-Content $bundlePath -Raw
+          $helperPath = 'AssetStudio-src/AssetStudio/AssetsHelper.cs'
+          $helperSource = Get-Content $helperPath -Raw
+          $helperNeedle = '            var matches = new List<AssetEntry>();'
+          $helperInject = [string]::Join("`n", @(
+            '            var matches = new List<AssetEntry>();',
+            '            var debugPath = Path.Combine(Path.GetDirectoryName(file), "asset_debug.txt");',
+            '            var debugText = string.Join(Environment.NewLine, assetsManager.assetsFileList.Select(x => $"FILE={x.fileName}; OBJECTS={x.m_Objects.Count}; VERSION={x.unityVersion}"));',
+            '            File.AppendAllText(debugPath, debugText + Environment.NewLine);'
+          ))
+          if (!$helperSource.Contains($helperNeedle)) { throw 'AssetHelper debug patch point not found' }
+          $helperSource = $helperSource.Replace($helperNeedle, $helperInject)
+          Set-Content -Path $helperPath -Value $helperSource -Encoding utf8
           $managerPath = 'AssetStudio-src/AssetStudio/AssetsManager.cs'
           $managerSource = Get-Content $managerPath -Raw
           $needle = 'var bundleFile = new BundleFile(reader, Game);' + [Environment]::NewLine + [Environment]::NewLine + '                // Priority 2'
@@ -67,6 +79,7 @@ jobs:
           path: |
             asset-dump/
             extracted/inner_*
+            extracted/asset_debug.txt
             asset-analysis-summary.txt
             asset-analysis-map.xml
           if-no-files-found: error
