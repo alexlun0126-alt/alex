@@ -161,7 +161,7 @@ public class GrifoSaunaBehaviour : MonoBehaviour
 		//IL_007d: Unknown result type (might be due to invalid IL or missing references)
 		if ((Object)(object)GameObject.Find("PLAYER") != (Object)null && !((Component)((Component)this).transform.root).GetComponent<CasaBehaviour>()._playerInMenu.Value)
 		{
-			if (!Object.op_Implicit((Object)(object)Player))
+			if (Player == null)
 			{
 				Player = GameObject.Find("PLAYER").gameObject;
 			}
