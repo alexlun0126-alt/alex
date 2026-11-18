@@ -73,6 +73,8 @@ public class CartaBehaviour : MonoBehaviour
 		{
 			consumo = ((Component)((Component)this).transform.root).GetComponent<ElectricidadBehaviour>();
 		}
+		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.position) <= 10f)
+		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		for (int i = 0; i < array.Length; i++)
 		{
@@ -87,6 +89,7 @@ public class CartaBehaviour : MonoBehaviour
 					sheets.GetComponent<FacturaBehaviour>().GetConsumo(consumo.consumor);
 				}
 			}
+		}
 		}
 		if (muestrafactura)
 		{
