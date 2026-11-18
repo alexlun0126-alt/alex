@@ -90,7 +90,9 @@ public class FacturaBehaviour : MonoBehaviour
 			totalspecial.text = num5.ToString();
 			float factura = num2 * 2f + (float)(num3 * 2) + num4 + num5 + num;
 			total.text = factura.ToString();
-			RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+			if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.position) <= 10f)
+		{
+		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 			for (int i = 0; i < array.Length; i++)
 			{
 				RaycastHit val = array[i];
@@ -99,6 +101,7 @@ public class FacturaBehaviour : MonoBehaviour
 					Object.FindObjectOfType<CartaBehaviour>().Loapagado(factura);
 				}
 			}
+		}
 		}
 	}
 }
