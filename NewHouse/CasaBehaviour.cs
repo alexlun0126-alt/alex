@@ -97,6 +97,10 @@ public class CasaBehaviour : MonoBehaviour
 
 	private GameObject cajatonta;
 
+	private bool drinkRunning;
+
+	private bool drink2Running;
+
 	private GameObject botonteleluz;
 
 	private GameObject botontele;
@@ -1191,8 +1195,9 @@ public class CasaBehaviour : MonoBehaviour
 
 	private void OnBagTriggerStay2(Collider collider)
 	{
-		if (((Object)collider).name == ((Object)Player).name)
+		if (((Object)collider).name == ((Object)Player).name && !drink2Running)
 		{
+			drink2Running = true;
 			((MonoBehaviour)this).StartCoroutine(Drink2());
 		}
 	}
@@ -1293,8 +1298,9 @@ public class CasaBehaviour : MonoBehaviour
 		float num = Vector3.Distance(cajatonta.transform.position, Player.transform.position);
 		if (electricidad.electricidadon)
 		{
-			if (teleencendida && num < 5f)
+			if (teleencendida && num < 5f && !drinkRunning)
 			{
+				drinkRunning = true;
 				((MonoBehaviour)this).StartCoroutine(Drink());
 			}
 			if (teleencendida)
@@ -1471,6 +1477,7 @@ public class CasaBehaviour : MonoBehaviour
 		yield return (object)new WaitForSeconds(0.5f);
 		FsmFloat val = FsmVariables.GlobalVariables.FindFsmFloat("PlayerFatigue");
 		val.Value += 0.01f;
+		drinkRunning = false;
 	}
 
 	private IEnumerator Drink2()
@@ -1480,6 +1487,7 @@ public class CasaBehaviour : MonoBehaviour
 		val.Value -= 0.05f;
 		FsmFloat val2 = FsmVariables.GlobalVariables.FindFsmFloat("PlayerDirtiness");
 		val2.Value -= 0.09f;
+		drink2Running = false;
 	}
 
 	private IEnumerator Drink3()
