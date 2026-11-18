@@ -23,6 +23,23 @@ jobs:
         shell: pwsh
         run: |
           git clone --depth 1 https://github.com/Razviar/assetstudio.git AssetStudio-src
+          $bundlePath = 'AssetStudio-src/AssetStudio/BundleFile.cs'
+          $bundleSource = Get-Content $bundlePath -Raw
+          $needle = 'file.stream.Position = 0;'
+          $inject = @'
+                  file.stream.Position = 0;
+                  try
+                  {
+                      var extractPath = Path.Combine(Path.GetDirectoryName(path), "inner_" + file.fileName);
+                      using (var output = File.Create(extractPath)) { file.stream.CopyTo(output); }
+                      file.stream.Position = 0;
+                      Logger.Info($"INNER_FILE {file.fileName} SIZE {node.size} PATH {extractPath}");
+                  }
+                  catch (Exception ex) { Logger.Error($"INNER_EXTRACT_ERROR {ex.Message}"); }
+'@
+          if (!$bundleSource.Contains($needle)) { throw 'Bundle extraction patch point not found' }
+          $bundleSource = $bundleSource.Replace($needle, $inject.TrimEnd())
+          Set-Content -Path $bundlePath -Value $bundleSource -Encoding utf8
           dotnet build AssetStudio-src/AssetStudio.CLI/AssetStudio.CLI.csproj -c Release -f net8.0-windows
       - name: Build asset inventory from Unity 5 bundle
         shell: pwsh
