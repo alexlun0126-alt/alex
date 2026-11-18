@@ -152,6 +152,8 @@ public class CajaSofaBehaviour : MonoBehaviour
 			AudioSource.PlayClipAtPoint(audiclip, ((Component)this).transform.position, 1f);
 			Object.Destroy((Object)(object)((Component)this).gameObject);
 		}
+		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.position) <= 10f)
+		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1f);
 		for (int i = 0; i < array.Length; i++)
 		{
@@ -164,6 +166,7 @@ public class CajaSofaBehaviour : MonoBehaviour
 					showGUI = true;
 				}
 			}
+		}
 		}
 	}
 
