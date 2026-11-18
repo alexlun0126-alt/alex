@@ -1,0 +1,50 @@
+name: Build NewHouse DLL
+
+on:
+  push:
+    branches:
+      - fix/newhouse-performance
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout modified NewHouse source
+        uses: actions/checkout@v4
+
+      - name: Checkout reference DLLs
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: _reference_source
+
+      - name: Prepare reference assemblies
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force refs | Out-Null
+          Copy-Item _reference_source/Assembly-CSharp.dll refs/
+          Copy-Item _reference_source/UnityEngine.dll refs/
+          Copy-Item _reference_source/MSCLoader.dll refs/
+          Copy-Item _reference_source/PlayMaker.dll refs/
+          Copy-Item _reference_source/cInput.dll refs/
+          Get-ChildItem refs | Select-Object Name, Length
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build NewHouse
+        run: dotnet build NewHouse.csproj --configuration Release
+
+      - name: Upload compiled DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: NewHouse-performance-fix
+          path: bin/Release/net35/NewHouse.dll
+          if-no-files-found: error
+          retention-days: 14
