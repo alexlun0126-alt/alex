@@ -31,6 +31,12 @@ public class DuchaBehaviour : MonoBehaviour
 
 	private FsmBool m_guiUseBool;
 
+	private bool duchaRunning;
+
+	private bool grifoRunning;
+
+	private bool cuboRunning;
+
 	private AudioSource audioboton;
 
 	private AudioSource audioducha;
@@ -63,7 +69,7 @@ public class DuchaBehaviour : MonoBehaviour
 
 	private void OnDuchaTriggerStay(Collider collider)
 	{
-		if (((Object)collider).name == ((Object)Player).name && abierto && cambiamodo)
+		if (((Object)collider).name == ((Object)Player).name && abierto && cambiamodo && !duchaRunning)
 		{
 			((MonoBehaviour)this).StartCoroutine(Ducha());
 		}
@@ -71,16 +77,20 @@ public class DuchaBehaviour : MonoBehaviour
 
 	private IEnumerator Ducha()
 	{
+		duchaRunning = true;
 		yield return (object)new WaitForSeconds(0.5f);
 		FsmFloat val = FsmVariables.GlobalVariables.FindFsmFloat("PlayerDirtiness");
 		val.Value -= 0.1f;
+		duchaRunning = false;
 	}
 
 	private IEnumerator LLenaCubo(Collider collider)
 	{
+		cuboRunning = true;
 		yield return (object)new WaitForSeconds(0.5f);
 		FsmFloat fsmFloat = ((Component)collider).GetComponent<PlayMakerFSM>().FsmVariables.GetFsmFloat("Water");
 		fsmFloat.Value += 0.01f;
+		cuboRunning = false;
 	}
 
 	private void OnGrifoTriggerStay(Collider collider)
@@ -92,23 +102,25 @@ public class DuchaBehaviour : MonoBehaviour
 			{
 				if (val.FsmName == "Crouch" && val.FsmVariables.FindFsmFloat("Position").Value == 0.3f)
 				{
-					((MonoBehaviour)this).StartCoroutine(Grifo());
+					if (!grifoRunning) ((MonoBehaviour)this).StartCoroutine(Grifo());
 				}
 			}
 		}
 		if (((Object)collider).name == "bucket(itemx)" && abierto && !cambiamodo)
 		{
-			((MonoBehaviour)this).StartCoroutine(LLenaCubo(collider));
+			if (!cuboRunning) ((MonoBehaviour)this).StartCoroutine(LLenaCubo(collider));
 		}
 	}
 
 	private IEnumerator Grifo()
 	{
+		grifoRunning = true;
 		yield return (object)new WaitForSeconds(0.5f);
 		FsmFloat val = FsmVariables.GlobalVariables.FindFsmFloat("PlayerThirst");
 		val.Value -= 0.3f;
 		FsmFloat val2 = FsmVariables.GlobalVariables.FindFsmFloat("PlayerUrine");
 		val2.Value += 0.1f;
+		grifoRunning = false;
 	}
 
 	private void Update()
@@ -160,10 +172,13 @@ public class DuchaBehaviour : MonoBehaviour
 				modogrifo.SetActive(true);
 			}
 		}
+		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.root.position) <= 60f)
+		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		foreach (RaycastHit hit in array)
 		{
 			RayDucha(hit);
+		}
 		}
 	}
 
