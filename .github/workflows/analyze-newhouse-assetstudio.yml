@@ -24,22 +24,29 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/Razviar/assetstudio.git AssetStudio-src
           dotnet build AssetStudio-src/AssetStudio.CLI/AssetStudio.CLI.csproj -c Release -f net8.0-windows
-      - name: Parse Unity 5 bundle and dump renderer/collider data
+      - name: Build asset inventory from Unity 5 bundle
         shell: pwsh
         run: |
           $cli = 'AssetStudio-src/AssetStudio.GUI/bin/Release/net8.0-windows/AssetStudio.CLI.exe'
           if (!(Test-Path $cli)) { throw "AssetStudio CLI not found: $cli" }
-          & $cli --game Normal --unity_version 5.0.0f4 --types GameObject:Both MeshRenderer:Both SkinnedMeshRenderer:Both MeshCollider:Both BoxCollider:Both SphereCollider:Both CapsuleCollider:Both --export_type Dump extracted/newhouse.unity3d asset-dump
+          & $cli --game Normal --unity_version 5.0.0f4 --types GameObject:Parse Mesh:Parse MeshRenderer:Parse SkinnedMeshRenderer:Parse MeshFilter:Parse MeshCollider:Parse BoxCollider:Parse SphereCollider:Parse CapsuleCollider:Parse Transform:Parse --map_op AssetMap --map_type XML extracted/newhouse.unity3d asset-dump
           if ($LASTEXITCODE -ne 0) { throw "AssetStudio exited with code $LASTEXITCODE" }
           $files = Get-ChildItem asset-dump -Recurse -File -ErrorAction SilentlyContinue
+          $xml = $files | Where-Object { $_.Extension -eq '.xml' }
           "EXPORTED_FILES=$($files.Count)" | Out-File asset-analysis-summary.txt
           $files | Group-Object Extension | ForEach-Object { "$($_.Name)=$($_.Count)" | Out-File asset-analysis-summary.txt -Append }
-          if ($files.Count -eq 0) { throw 'AssetStudio produced no parsed asset dumps' }
+          if (!$xml) { throw 'AssetStudio produced no XML asset map' }
+          Copy-Item $xml[0].FullName asset-analysis-map.xml -Force
+          [xml]$doc = Get-Content asset-analysis-map.xml -Raw
+          $assets = @($doc.SelectNodes('//Asset'))
+          "ASSET_ROWS=$($assets.Count)" | Out-File asset-analysis-summary.txt -Append
+          $assets | Group-Object { $_.SelectSingleNode('Type').InnerText } | Sort-Object Count -Descending | ForEach-Object { "$($_.Name)=$($_.Count)" | Out-File asset-analysis-summary.txt -Append }
       - uses: actions/upload-artifact@v4
         with:
-          name: NewHouse-AssetStudio-dumps
+          name: NewHouse-AssetStudio-inventory
           path: |
             asset-dump/
             asset-analysis-summary.txt
+            asset-analysis-map.xml
           if-no-files-found: error
           retention-days: 7
