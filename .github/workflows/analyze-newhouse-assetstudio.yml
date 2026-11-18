@@ -44,6 +44,13 @@ jobs:
           if (!$helperSource.Contains($helperNeedle)) { throw 'AssetHelper debug patch point not found' }
           $helperSource = $helperSource.Replace($helperNeedle, $helperInject)
           Set-Content -Path $helperPath -Value $helperSource -Encoding utf8
+          $studioPath = 'AssetStudio-src/AssetStudio.CLI/Studio.cs'
+          $studioSource = Get-Content $studioPath -Raw
+          $oldGameObject = 'exportable = ClassIDType.GameObject.CanExport() && m_GameObject.HasModel();'
+          $newGameObject = 'exportable = ClassIDType.GameObject.CanExport();'
+          if (!$studioSource.Contains($oldGameObject)) { throw 'GameObject export patch point not found' }
+          $studioSource = $studioSource.Replace($oldGameObject, $newGameObject)
+          Set-Content -Path $studioPath -Value $studioSource -Encoding utf8
           $managerPath = 'AssetStudio-src/AssetStudio/AssetsManager.cs'
           $managerSource = Get-Content $managerPath -Raw
           $needle = 'var bundleFile = new BundleFile(reader, Game);' + [Environment]::NewLine + [Environment]::NewLine + '                // Priority 2'
