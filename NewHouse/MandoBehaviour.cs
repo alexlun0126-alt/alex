@@ -116,6 +116,8 @@ public class MandoBehaviour : MonoBehaviour
 			((Component)this).transform.localPosition = new Vector3(-2.108f, 0.956f, -5.223f);
 			((Component)this).transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 		}
+		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.root.position) <= 60f)
+		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		for (int i = 0; i < array.Length; i++)
 		{
@@ -139,6 +141,7 @@ public class MandoBehaviour : MonoBehaviour
 					puertas.Operapuerta(aperturagate);
 				}
 			}
+		}
 		}
 	}
 }
