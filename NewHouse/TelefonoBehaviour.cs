@@ -85,7 +85,7 @@ public class TelefonoBehaviour : MonoBehaviour
 		//IL_0214: Unknown result type (might be due to invalid IL or missing references)
 		casa = ((Component)((Component)this).transform.root).GetComponent<CasaBehaviour>();
 		m_guiUseBool = PlayMakerGlobals.Instance.Variables.FindFsmBool("GUIuse");
-		if (Object.op_Implicit((Object)(object)GameObject.Find("YARD/Building").transform.FindChild("LIVINGROOM")))
+		if (GameObject.Find("YARD/Building").transform.FindChild("LIVINGROOM") != null)
 		{
 			log = ((Component)((Component)this).transform.FindChild("utiles/telefono")).gameObject;
 			auricular = ((Component)log.transform.FindChild("auricular")).gameObject;
@@ -166,7 +166,7 @@ public class TelefonoBehaviour : MonoBehaviour
 		{
 			return;
 		}
-		if (Object.op_Implicit((Object)(object)GameObject.Find("YARD/Building").transform.FindChild("LIVINGROOM")) && (Object)(object)dardo1clone != (Object)null)
+		if (GameObject.Find("YARD/Building").transform.FindChild("LIVINGROOM") != null && (Object)(object)dardo1clone != (Object)null)
 		{
 			dardo1clone.SetActive(dardo1.activeSelf);
 			dardo2clone.SetActive(dardo2.activeSelf);
