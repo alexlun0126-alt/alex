@@ -50,6 +50,8 @@ public class PedidoPapelBehaviour : MonoBehaviour
 			return;
 		}
 		texto.text = precio.ToString();
+		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.root.position) <= 60f)
+		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		for (int i = 0; i < array.Length; i++)
 		{
@@ -65,6 +67,7 @@ public class PedidoPapelBehaviour : MonoBehaviour
 					Object.Destroy((Object)(object)((Component)this).gameObject);
 				}
 			}
+		}
 		}
 	}
 }
