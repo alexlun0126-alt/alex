@@ -1910,6 +1910,8 @@ public class CasaBehaviour : MonoBehaviour
 			((Component)this).GetComponent<ElectricidadBehaviour>().electricidadon = false;
 			((Component)this).GetComponent<ElectricidadBehaviour>().consumor = 0f;
 		}
+		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.root.position) <= 60f)
+		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		for (int i = 0; i < array.Length; i++)
 		{
@@ -1964,6 +1966,7 @@ public class CasaBehaviour : MonoBehaviour
 				}
 			}
 			RayCartel(hit);
+		}
 		}
 		float num = (float)Math.Round(((Component)this).GetComponent<ElectricidadBehaviour>().consumor, 1);
 		consumidodisc = num;
