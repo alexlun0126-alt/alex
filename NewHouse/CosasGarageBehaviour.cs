@@ -144,7 +144,7 @@ public class CosasGarageBehaviour : MonoBehaviour
 		{
 			yield return null;
 		}
-		if (Object.op_Implicit((Object)(object)GameObject.Find("ITEMS")))
+		if (GameObject.Find("ITEMS") != null)
 		{
 			items = GameObject.Find("ITEMS").gameObject;
 		}
@@ -153,7 +153,7 @@ public class CosasGarageBehaviour : MonoBehaviour
 			ModConsole.Error("No localize ITEMS");
 			items = null;
 		}
-		if (Object.op_Implicit((Object)(object)GameObject.Find("ITEMS/parts magazine(itemx)")))
+		if (GameObject.Find("ITEMS/parts magazine(itemx)") != null)
 		{
 			revista = GameObject.Find("ITEMS/parts magazine(itemx)").gameObject;
 			posirevista = GameObject.Find("sitiorevista").gameObject;
@@ -168,7 +168,7 @@ public class CosasGarageBehaviour : MonoBehaviour
 		}
 		casanueva = ((Component)this).gameObject;
 		casavieja = GameObject.Find("YARD/Building").gameObject;
-		if (Object.op_Implicit((Object)(object)GameObject.Find("spanner set(itemx)")))
+		if (GameObject.Find("spanner set(itemx)") != null)
 		{
 			herramientas = GameObject.Find("spanner set(itemx)").gameObject;
 			herramienta = Object.Instantiate<GameObject>(herramientas);
@@ -181,7 +181,7 @@ public class CosasGarageBehaviour : MonoBehaviour
 			herramientas = null;
 			herramienta = null;
 		}
-		if (Object.op_Implicit((Object)(object)GameObject.Find("flashlight(itemx)")))
+		if (GameObject.Find("flashlight(itemx)") != null)
 		{
 			linterna = GameObject.Find("flashlight(itemx)").gameObject;
 			lintern = Object.Instantiate<GameObject>(linterna);
@@ -194,7 +194,7 @@ public class CosasGarageBehaviour : MonoBehaviour
 			linterna = null;
 			lintern = null;
 		}
-		if (Object.op_Implicit((Object)(object)GameObject.Find("radio(itemx)")))
+		if (GameObject.Find("radio(itemx)") != null)
 		{
 			radio = GameObject.Find("radio(itemx)").gameObject;
 			radi = Object.Instantiate<GameObject>(radio);
@@ -207,7 +207,7 @@ public class CosasGarageBehaviour : MonoBehaviour
 			radio = null;
 			radi = null;
 		}
-		if (Object.op_Implicit((Object)(object)GameObject.Find("motor hoist(itemx)")))
+		if (GameObject.Find("motor hoist(itemx)") != null)
 		{
 			hoist = GameObject.Find("motor hoist(itemx)").gameObject;
 			posihoist = GameObject.Find("sitiohoist").transform;
@@ -224,7 +224,7 @@ public class CosasGarageBehaviour : MonoBehaviour
 			hoi = null;
 		}
 		posigarrafa = GameObject.Find("sitiogarrafas").transform;
-		if (Object.op_Implicit((Object)(object)GameObject.Find("gasoline(itemx)")))
+		if (GameObject.Find("gasoline(itemx)") != null)
 		{
 			garrafag = GameObject.Find("gasoline(itemx)").gameObject;
 			garrafasg = Object.Instantiate<GameObject>(garrafag);
@@ -236,7 +236,7 @@ public class CosasGarageBehaviour : MonoBehaviour
 			garrafag = null;
 			garrafasg = null;
 		}
-		if (Object.op_Implicit((Object)(object)GameObject.Find("diesel(itemx)")))
+		if (GameObject.Find("diesel(itemx)") != null)
 		{
 			garrafad = GameObject.Find("diesel(itemx)").gameObject;
 			garrafasd = Object.Instantiate<GameObject>(garrafad);
@@ -249,7 +249,7 @@ public class CosasGarageBehaviour : MonoBehaviour
 			garrafasd = null;
 		}
 		posijack = GameObject.Find("sitiojack").transform;
-		if (Object.op_Implicit((Object)(object)GameObject.Find("floor jack(itemx)")))
+		if (GameObject.Find("floor jack(itemx)") != null)
 		{
 			jac = GameObject.Find("floor jack(itemx)").gameObject;
 			jacclone = Object.Instantiate<GameObject>(jac);
@@ -264,7 +264,7 @@ public class CosasGarageBehaviour : MonoBehaviour
 			jac = null;
 			jacclone = null;
 		}
-		if (Object.op_Implicit((Object)(object)GameObject.Find("YARD/Building/Garage/BatteryCharger")))
+		if (GameObject.Find("YARD/Building/Garage/BatteryCharger") != null)
 		{
 			bateria = GameObject.Find("YARD/Building/Garage/BatteryCharger").gameObject;
 			bateriaclone = Object.Instantiate<GameObject>(bateria);
