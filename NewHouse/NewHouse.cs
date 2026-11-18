@@ -43,10 +43,6 @@ public class NewHouse : Mod
 
 	private CompraObjetosBehaviour comprassave;
 
-	private Settings borrarsaves = new Settings("borrar", "Clean Saves Mod", (Action)Testing);
-
-	private Settings borrarsaves2 = new Settings("borrar", "Reset Position Remote Control", (Action)Testing2);
-
 	public override string ID => "NewHouse";
 
 	public override string Name => "NewHouse";
@@ -281,8 +277,8 @@ public class NewHouse : Mod
 
 	private void ModSettings()
 	{
-		Settings.AddButton((Mod)(object)this, borrarsaves, "ATTENTION: clean saves mod, means buying the house again.");
-		Settings.AddButton((Mod)(object)this, borrarsaves2, "ATTENTION: use this option in the menu and then load the game.");
+		Settings.AddButton("Clean Saves Mod", Testing);
+		Settings.AddButton("Reset Position Remote Control", Testing2);
 	}
 
 	private void OnMenuLoad()
@@ -290,7 +286,7 @@ public class NewHouse : Mod
 		//IL_004a: Unknown result type (might be due to invalid IL or missing references)
 		m_instance = this;
 		assetPath = ModLoader.GetModAssetsFolder((Mod)(object)this);
-		configPath = ModLoader.GetModConfigFolder((Mod)(object)this);
+		configPath = ModLoader.GetModSettingsFolder((Mod)(object)this);
 		nnombre = ((Mod)this).Name;
 		aauthor = ((Mod)this).Author;
 		vversion = ((Mod)this).Version;
