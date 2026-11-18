@@ -1,0 +1,39 @@
+name: Extract NewHouse asset bundle
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'newhouse.part*.rar'
+      - '.github/workflows/extract-newhouse-assets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install 7-Zip
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y p7zip-full
+
+      - name: Extract split RAR archive
+        run: |
+          mkdir -p extracted
+          7z x newhouse.part1.rar -oextracted -y
+          test -f extracted/newhouse.unity3d
+          ls -lh extracted/newhouse.unity3d
+
+      - name: Upload Unity asset bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: NewHouse-Unity-asset
+          path: extracted/newhouse.unity3d
+          if-no-files-found: error
+          retention-days: 3
