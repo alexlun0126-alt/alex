@@ -21,7 +21,7 @@ jobs:
           7z x newhouse.part1.rar -oextracted -y
           test -f extracted/newhouse.unity3d
       - name: Install UnityPy
-        run: python -m pip install --upgrade pip UnityPy==1.9.6
+        run: python -m pip install --upgrade pip UnityPy==1.9.28
       - name: Inspect asset bundle
         run: python tools/analyze_newhouse_assets.py
       - uses: actions/upload-artifact@v4
