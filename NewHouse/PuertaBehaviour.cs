@@ -440,26 +440,56 @@ public class PuertaBehaviour : MonoBehaviour
 		}
 		if (root.vendido)
 		{
-			SetupPuertasgarage();
-			PuertaInterior1();
-			PuertaInterior2();
-			PuertaInterior3();
-			PuertaInterior4();
-			PuertaInterior5();
-			PuertaInterior6();
-			Puertaexterior1();
-			Puertaexterior2();
-			Puertaexterior3();
-			Puertaexterior4();
-			Puertaexterior5();
-			Puertaexterior6();
-			Puertaexterior7();
-			Puertaexterior8();
-			Puertaexterior9();
-			Puertaexterior10();
-			ParkingExterior();
-			ParkingInterior();
+			UpdateDoorVisuals();
 		}
+	}
+
+	private int lastVisualState = -1;
+
+	private void UpdateDoorVisuals()
+	{
+		int state = 0;
+		if (abierta1) state |= 1 << 0;
+		if (abierta2) state |= 1 << 1;
+		if (abierta3) state |= 1 << 2;
+		if (abierta4) state |= 1 << 3;
+		if (abierta5) state |= 1 << 4;
+		if (abierta6) state |= 1 << 5;
+		if (abierta7) state |= 1 << 6;
+		if (abierta8) state |= 1 << 7;
+		if (abierta9) state |= 1 << 8;
+		if (abierta10) state |= 1 << 9;
+		if (interiorabierta1) state |= 1 << 10;
+		if (interiorabierta2) state |= 1 << 11;
+		if (interiorabierta3) state |= 1 << 12;
+		if (interiorabierta4) state |= 1 << 13;
+		if (interiorabierta5) state |= 1 << 14;
+		if (interiorabierta6) state |= 1 << 15;
+		if (abiertaparking) state |= 1 << 16;
+		if (puertavallagarageopen) state |= 1 << 17;
+		if (puertavallaopen) state |= 1 << 18;
+
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 0)) != 0) Puertaexterior1();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 1)) != 0) Puertaexterior2();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 2)) != 0) Puertaexterior3();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 3)) != 0) Puertaexterior4();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 4)) != 0) Puertaexterior5();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 5)) != 0) Puertaexterior6();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 6)) != 0) Puertaexterior7();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 7)) != 0) Puertaexterior8();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 8)) != 0) Puertaexterior9();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 9)) != 0) Puertaexterior10();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 10)) != 0) PuertaInterior1();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 11)) != 0) PuertaInterior2();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 12)) != 0) PuertaInterior3();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 13)) != 0) PuertaInterior4();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 14)) != 0) PuertaInterior5();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 15)) != 0) PuertaInterior6();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 16)) != 0) SetupPuertasgarage();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 17)) != 0) ParkingExterior();
+		if (lastVisualState == -1 || ((state ^ lastVisualState) & (1 << 18)) != 0) ParkingInterior();
+
+		lastVisualState = state;
 	}
 
 	private void SetupPuertasgarage()
