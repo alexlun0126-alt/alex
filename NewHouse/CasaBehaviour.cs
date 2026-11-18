@@ -95,6 +95,8 @@ public class CasaBehaviour : MonoBehaviour
 
 	private FsmBool m_guiUseBool;
 
+	private PlayMakerFSM sunFsm;
+
 	private GameObject cajatonta;
 
 	private bool drinkRunning;
@@ -772,6 +774,7 @@ public class CasaBehaviour : MonoBehaviour
 		camsleep.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 		camsleep.transform.localScale = new Vector3(3f, 3f, 3f);
 		Player = GameObject.Find("PLAYER").gameObject;
+		sunFsm = GameObject.Find("MAP/SUN/Pivot/SUN").GetComponent<PlayMakerFSM>();
 		store = GameObject.Find("STORE").gameObject;
 		storelod = ((Component)store.transform.FindChild("LOD")).gameObject;
 		storelod.SetActive(true);
@@ -1308,7 +1311,7 @@ public class CasaBehaviour : MonoBehaviour
 				botonteleon.SetActive(true);
 				botonteleoff.SetActive(false);
 				botonteleluz.GetComponent<Renderer>().material.color = Color.green;
-				if (GameObject.Find("MAP/SUN/Pivot/SUN").GetComponent<PlayMakerFSM>().FsmVariables.FindFsmBool("Night").Value)
+				if (sunFsm.FsmVariables.FindFsmBool("Night").Value)
 				{
 					if (!marjatta.isPlaying)
 					{
@@ -1327,7 +1330,7 @@ public class CasaBehaviour : MonoBehaviour
 						pantalla.GetComponent<Renderer>().material.mainTexture = peliculacarta;
 					}
 				}
-				if (!GameObject.Find("MAP/SUN/Pivot/SUN").GetComponent<PlayMakerFSM>().FsmVariables.FindFsmBool("Night").Value)
+				if (!sunFsm.FsmVariables.FindFsmBool("Night").Value)
 				{
 					if (!peliculadia.isPlaying)
 					{
@@ -1869,7 +1872,7 @@ public class CasaBehaviour : MonoBehaviour
 		//IL_0421: Unknown result type (might be due to invalid IL or missing references)
 		//IL_01bc: Unknown result type (might be due to invalid IL or missing references)
 		//IL_01b5: Unknown result type (might be due to invalid IL or missing references)
-		if (!((Object)(object)GameObject.Find("PLAYER") != (Object)null) || !playerspawn)
+		if ((Object)(object)Player == (Object)null || !playerspawn)
 		{
 			return;
 		}
@@ -1918,7 +1921,7 @@ public class CasaBehaviour : MonoBehaviour
 			((Component)this).GetComponent<ElectricidadBehaviour>().electricidadon = false;
 			((Component)this).GetComponent<ElectricidadBehaviour>().consumor = 0f;
 		}
-		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.root.position) <= 60f)
+		if (Vector3.Distance(Player.transform.position, transform.root.position) <= 60f)
 		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		for (int i = 0; i < array.Length; i++)
