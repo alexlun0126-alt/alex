@@ -100,7 +100,7 @@ public class CajaSillaBehaviour : MonoBehaviour
 		//IL_020f: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0249: Unknown result type (might be due to invalid IL or missing references)
 		//IL_024e: Unknown result type (might be due to invalid IL or missing references)
-		if (!((Object)(object)GameObject.Find("PLAYER") != (Object)null))
+		if (!((Object)(object)NewHouseRuntime.Player != (Object)null))
 		{
 			return;
 		}
@@ -152,9 +152,9 @@ public class CajaSillaBehaviour : MonoBehaviour
 			AudioSource.PlayClipAtPoint(audiclip, ((Component)this).transform.position, 1f);
 			Object.Destroy((Object)(object)((Component)this).gameObject);
 		}
-		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.position) <= 10f)
+		if (Vector3.Distance(NewHouseRuntime.Player.transform.position, transform.position) <= 10f)
 		{
-		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1f);
+		RaycastHit[] array = NewHouseRuntime.GetMouseHits(1f);
 		for (int i = 0; i < array.Length; i++)
 		{
 			RaycastHit val = array[i];

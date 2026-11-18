@@ -29,13 +29,13 @@ public class CajaNightStandBehaviour : MonoBehaviour
 		//IL_003d: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0093: Unknown result type (might be due to invalid IL or missing references)
 		//IL_00a9: Unknown result type (might be due to invalid IL or missing references)
-		if (!((Object)(object)GameObject.Find("PLAYER") != (Object)null))
+		if (!((Object)(object)NewHouseRuntime.Player != (Object)null))
 		{
 			return;
 		}
-		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.position) <= 10f)
+		if (Vector3.Distance(NewHouseRuntime.Player.transform.position, transform.position) <= 10f)
 		{
-		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1f);
+		RaycastHit[] array = NewHouseRuntime.GetMouseHits(1f);
 		for (int i = 0; i < array.Length; i++)
 		{
 			RaycastHit val = array[i];

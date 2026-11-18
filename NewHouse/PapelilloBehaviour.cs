@@ -985,7 +985,7 @@ public class PapelilloBehaviour : MonoBehaviour
 		//IL_009d: Unknown result type (might be due to invalid IL or missing references)
 		//IL_009f: Unknown result type (might be due to invalid IL or missing references)
 		//IL_00a6: Unknown result type (might be due to invalid IL or missing references)
-		if ((Object)(object)GameObject.Find("PLAYER") != (Object)null)
+		if ((Object)(object)NewHouseRuntime.Player != (Object)null)
 		{
 			Objetos();
 			Objetos2();
@@ -1011,9 +1011,9 @@ public class PapelilloBehaviour : MonoBehaviour
 			{
 				barbacoa = true;
 			}
-			if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.position) <= 10f)
+			if (Vector3.Distance(NewHouseRuntime.Player.transform.position, transform.position) <= 10f)
 		{
-		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+		RaycastHit[] array = NewHouseRuntime.GetMouseHits(1.5f);
 			foreach (RaycastHit hit in array)
 			{
 				Rayservicio2(hit);

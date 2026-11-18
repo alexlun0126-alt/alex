@@ -162,7 +162,7 @@ public class TelefonoBehaviour : MonoBehaviour
 		//IL_0103: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0108: Unknown result type (might be due to invalid IL or missing references)
 		//IL_012b: Unknown result type (might be due to invalid IL or missing references)
-		if (!((Object)(object)GameObject.Find("PLAYER") != (Object)null))
+		if (!((Object)(object)NewHouseRuntime.Player != (Object)null))
 		{
 			return;
 		}
@@ -176,9 +176,9 @@ public class TelefonoBehaviour : MonoBehaviour
 			dardo6clone.SetActive(dardo6.activeSelf);
 			dardo7clone.SetActive(dardo7.activeSelf);
 		}
-		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.root.position) <= 60f)
+		if (Vector3.Distance(NewHouseRuntime.Player.transform.position, transform.root.position) <= 60f)
 		{
-		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+		RaycastHit[] array = NewHouseRuntime.GetMouseHits(1.5f);
 		foreach (RaycastHit hit in array)
 		{
 			if (casa.vendido && (Object)(object)fsmorigi != (Object)null)

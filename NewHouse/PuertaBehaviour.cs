@@ -417,7 +417,7 @@ public class PuertaBehaviour : MonoBehaviour
 		//IL_004f: Unknown result type (might be due to invalid IL or missing references)
 		//IL_005e: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0065: Unknown result type (might be due to invalid IL or missing references)
-		if (!((Object)(object)GameObject.Find("PLAYER") != (Object)null))
+		if (!((Object)(object)NewHouseRuntime.Player != (Object)null))
 		{
 			return;
 		}
@@ -426,9 +426,9 @@ public class PuertaBehaviour : MonoBehaviour
 			loading = true;
 			((MonoBehaviour)this).StartCoroutine(Espera());
 		}
-		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.root.position) <= 60f)
+		if (Vector3.Distance(NewHouseRuntime.Player.transform.position, transform.root.position) <= 60f)
 		{
-		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+		RaycastHit[] array = NewHouseRuntime.GetMouseHits(1.5f);
 		foreach (RaycastHit hit in array)
 		{
 			if (root.vendido)

@@ -744,7 +744,7 @@ public class CasaBehaviour : MonoBehaviour
 
 	private IEnumerator SetupMod()
 	{
-		while ((Object)(object)GameObject.Find("PLAYER") == (Object)null)
+		while ((Object)(object)NewHouseRuntime.Player == (Object)null)
 		{
 			yield return null;
 		}
@@ -775,7 +775,7 @@ public class CasaBehaviour : MonoBehaviour
 		camsleep.transform.localPosition = new Vector3(0f, 0f, 0f);
 		camsleep.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 		camsleep.transform.localScale = new Vector3(3f, 3f, 3f);
-		Player = GameObject.Find("PLAYER").gameObject;
+		Player = NewHouseRuntime.Player.gameObject;
 		sunFsm = GameObject.Find("MAP/SUN/Pivot/SUN").GetComponent<PlayMakerFSM>();
 		store = GameObject.Find("STORE").gameObject;
 		storelod = ((Component)store.transform.FindChild("LOD")).gameObject;
@@ -1924,7 +1924,7 @@ public class CasaBehaviour : MonoBehaviour
 		}
 		if (Vector3.Distance(Player.transform.position, transform.root.position) <= 60f)
 		{
-		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+		RaycastHit[] array = NewHouseRuntime.GetMouseHits(1.5f);
 		for (int i = 0; i < array.Length; i++)
 		{
 			RaycastHit hit = array[i];

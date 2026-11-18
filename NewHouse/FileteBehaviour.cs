@@ -147,7 +147,7 @@ public class FileteBehaviour : MonoBehaviour
 		//IL_00a1: Unknown result type (might be due to invalid IL or missing references)
 		//IL_00a6: Unknown result type (might be due to invalid IL or missing references)
 		//IL_00dd: Unknown result type (might be due to invalid IL or missing references)
-		if (!((Object)(object)GameObject.Find("PLAYER") != (Object)null))
+		if (!((Object)(object)NewHouseRuntime.Player != (Object)null))
 		{
 			return;
 		}
@@ -160,9 +160,9 @@ public class FileteBehaviour : MonoBehaviour
 		{
 			((MonoBehaviour)this).StopCoroutine(Comervalue());
 		}
-		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.position) <= 10f)
+		if (Vector3.Distance(NewHouseRuntime.Player.transform.position, transform.position) <= 10f)
 		{
-		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+		RaycastHit[] array = NewHouseRuntime.GetMouseHits(1.5f);
 		foreach (RaycastHit hit in array)
 		{
 			RayBistec(hit);

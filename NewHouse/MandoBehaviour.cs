@@ -106,7 +106,7 @@ public class MandoBehaviour : MonoBehaviour
 		//IL_0101: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0114: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0119: Unknown result type (might be due to invalid IL or missing references)
-		if (!((Object)(object)GameObject.Find("PLAYER") != (Object)null))
+		if (!((Object)(object)NewHouseRuntime.Player != (Object)null))
 		{
 			return;
 		}
@@ -116,9 +116,9 @@ public class MandoBehaviour : MonoBehaviour
 			((Component)this).transform.localPosition = new Vector3(-2.108f, 0.956f, -5.223f);
 			((Component)this).transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 		}
-		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.root.position) <= 60f)
+		if (Vector3.Distance(NewHouseRuntime.Player.transform.position, transform.root.position) <= 60f)
 		{
-		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+		RaycastHit[] array = NewHouseRuntime.GetMouseHits(1.5f);
 		for (int i = 0; i < array.Length; i++)
 		{
 			RaycastHit val = array[i];

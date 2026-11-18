@@ -58,7 +58,7 @@ public class CartaBehaviour : MonoBehaviour
 		//IL_010a: Unknown result type (might be due to invalid IL or missing references)
 		if ((Object)(object)player == (Object)null)
 		{
-			player = GameObject.Find("PLAYER").gameObject;
+			player = NewHouseRuntime.Player.gameObject;
 			return;
 		}
 		if (!checkplayer)
@@ -73,9 +73,9 @@ public class CartaBehaviour : MonoBehaviour
 		{
 			consumo = ((Component)((Component)this).transform.root).GetComponent<ElectricidadBehaviour>();
 		}
-		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.position) <= 10f)
+		if (Vector3.Distance(NewHouseRuntime.Player.transform.position, transform.position) <= 10f)
 		{
-		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+		RaycastHit[] array = NewHouseRuntime.GetMouseHits(1.5f);
 		for (int i = 0; i < array.Length; i++)
 		{
 			RaycastHit val = array[i];

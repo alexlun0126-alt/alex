@@ -130,13 +130,13 @@ public class DuchaBehaviour : MonoBehaviour
 		//IL_0166: Unknown result type (might be due to invalid IL or missing references)
 		//IL_016b: Unknown result type (might be due to invalid IL or missing references)
 		//IL_016d: Unknown result type (might be due to invalid IL or missing references)
-		if (!((Object)(object)GameObject.Find("PLAYER") != (Object)null) || ((Component)((Component)this).transform.root).GetComponent<CasaBehaviour>()._playerInMenu.Value)
+		if (!((Object)(object)NewHouseRuntime.Player != (Object)null) || ((Component)((Component)this).transform.root).GetComponent<CasaBehaviour>()._playerInMenu.Value)
 		{
 			return;
 		}
 		if (Player == null)
 		{
-			Player = GameObject.Find("PLAYER").gameObject;
+			Player = NewHouseRuntime.Player.gameObject;
 		}
 		if (abierto)
 		{
@@ -172,9 +172,9 @@ public class DuchaBehaviour : MonoBehaviour
 				modogrifo.SetActive(true);
 			}
 		}
-		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.root.position) <= 60f)
+		if (Vector3.Distance(NewHouseRuntime.Player.transform.position, transform.root.position) <= 60f)
 		{
-		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+		RaycastHit[] array = NewHouseRuntime.GetMouseHits(1.5f);
 		foreach (RaycastHit hit in array)
 		{
 			RayDucha(hit);
