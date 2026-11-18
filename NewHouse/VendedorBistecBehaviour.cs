@@ -84,7 +84,7 @@ public class VendedorBistecBehaviour : MonoBehaviour
 		chuletavendor4 = ((Component)estante.transform.FindChild("chuleta4")).gameObject;
 		((Object)chuletavendor4).name = "Raw Steak";
 		register = GameObject.Find("STORE/StoreCashRegister/Register").gameObject;
-		FsmHook.FsmInject(register, "Purchase", (Action)OnBuyHook);
+		register.GetComponent<PlayMakerFSM>().FsmInject("Purchase", (Action)OnBuyHook);
 		m_guiBuyBool = PlayMakerGlobals.Instance.Variables.FindFsmBool("GUIbuy");
 		m_guiInteractString = PlayMakerGlobals.Instance.Variables.FindFsmString("GUIinteraction");
 		Load();
@@ -181,7 +181,7 @@ public class VendedorBistecBehaviour : MonoBehaviour
 			return;
 		}
 		RaycastHit val = default;
-		if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), ref val, 1f) && register.GetComponent<PlayMakerFSM>().FsmVariables.FindFsmBool("StoreOpen").Value)
+		if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out val, 1f) && register.GetComponent<PlayMakerFSM>().FsmVariables.FindFsmBool("StoreOpen").Value)
 		{
 			if ((Object)(object)((Component)val.collider).gameObject == (Object)(object)chuletavendor1)
 			{
