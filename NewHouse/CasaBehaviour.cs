@@ -1918,7 +1918,7 @@ public class CasaBehaviour : MonoBehaviour
 			((Component)this).GetComponent<ElectricidadBehaviour>().electricidadon = false;
 			((Component)this).GetComponent<ElectricidadBehaviour>().consumor = 0f;
 		}
-		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.root.position) <= 60f)
+		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.root.position) <= 60f)
 		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		for (int i = 0; i < array.Length; i++)
