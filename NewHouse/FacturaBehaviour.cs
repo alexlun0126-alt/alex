@@ -90,7 +90,7 @@ public class FacturaBehaviour : MonoBehaviour
 			totalspecial.text = num5.ToString();
 			float factura = num2 * 2f + (float)(num3 * 2) + num4 + num5 + num;
 			total.text = factura.ToString();
-			if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.position) <= 10f)
+			if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.position) <= 10f)
 		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 			for (int i = 0; i < array.Length; i++)
