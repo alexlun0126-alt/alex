@@ -31,7 +31,7 @@ jobs:
           $helperInject = [string]::Join("`n", @(
             '            var matches = new List<AssetEntry>();',
             '            var debugPath = Path.Combine(Path.GetDirectoryName(file), "asset_debug.txt");',
-            '            var debugText = string.Join(Environment.NewLine, assetsManager.assetsFileList.Select(x => $"FILE={x.fileName}; OBJECTS={x.m_Objects.Count}; VERSION={x.unityVersion}; CLASSIDS=" + string.Join(",", x.m_Objects.GroupBy(o => o.classID).OrderByDescending(g => g.Count()).Select(g => $"{g.Key}:{g.Count()}")));',
+            '            var debugText = string.Join(Environment.NewLine, assetsManager.assetsFileList.Select(x => $"FILE={x.fileName}; OBJECTS={x.m_Objects.Count}; VERSION={x.unityVersion}; CLASSIDS=" + string.Join(",", x.m_Objects.GroupBy(o => o.classID).OrderByDescending(g => g.Count()).Select(g => g.Key.ToString() + ":" + g.Count().ToString()))));',
             '            File.AppendAllText(debugPath, debugText + Environment.NewLine);'
           ))
           if (!$helperSource.Contains($helperNeedle)) { throw 'AssetHelper debug patch point not found' }
