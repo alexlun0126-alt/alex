@@ -83,6 +83,8 @@ public class ElectricidadBehaviour : MonoBehaviour
 
 	public bool loaded;
 
+	private bool loading;
+
 	private void Start()
 	{
 		luces = ((Component)((Component)this).transform.FindChild("utiles/luces")).GetComponent<LucesBehaviour>();
@@ -196,12 +198,14 @@ public class ElectricidadBehaviour : MonoBehaviour
 	{
 		yield return (object)new WaitForSeconds(4f);
 		Load();
+		loading = false;
 	}
 
 	private void Update()
 	{
-		if (!loaded)
+		if (!loaded && !loading)
 		{
+			loading = true;
 			((MonoBehaviour)this).StartCoroutine(Espera());
 		}
 		if (!general.vendido)
