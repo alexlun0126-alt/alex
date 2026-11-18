@@ -3,20 +3,20 @@
     <AssemblyName>NewHouse</AssemblyName>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <TargetFramework>net35</TargetFramework>
-  </PropertyGroup>
-  <PropertyGroup>
     <LangVersion>14.0</LangVersion>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
   </PropertyGroup>
-  <PropertyGroup />
-  <ItemGroup />
   <ItemGroup>
-    <Reference Include="UnityEngine" />
-    <Reference Include="PlayMaker" />
-    <Reference Include="MSCLoader" />
-    <Reference Include="cInput" />
+    <Compile Remove="_reference_source/**/*.cs" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net35" Version="1.0.3" PrivateAssets="All" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="UnityEngine"><HintPath>refs/UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="PlayMaker"><HintPath>refs/PlayMaker.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="MSCLoader"><HintPath>refs/MSCLoader.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="cInput"><HintPath>refs/cInput.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Assembly-CSharp"><HintPath>refs/Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="System.Core" />
-    <Reference Include="Assembly-CSharp" />
   </ItemGroup>
 </Project>
