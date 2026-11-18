@@ -55,9 +55,13 @@ public class NewHouse : Mod
 
 	public override string Version => "5.1";
 
-	public override bool UseAssetsFolder => true;
-
-	public override bool LoadInMenu => true;
+	public override void ModSetup()
+	{
+		SetupFunction(Setup.OnMenuLoad, OnMenuLoad);
+		SetupFunction(Setup.OnSave, OnSave);
+		SetupFunction(Setup.ModSettings, ModSettings);
+		SetupFunction(Setup.Update, Update);
+	}
 
 	public static NewHouse Instance => m_instance;
 
