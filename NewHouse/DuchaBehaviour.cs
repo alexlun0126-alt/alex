@@ -134,7 +134,7 @@ public class DuchaBehaviour : MonoBehaviour
 		{
 			return;
 		}
-		if (!Object.op_Implicit((Object)(object)Player))
+		if (Player == null)
 		{
 			Player = GameObject.Find("PLAYER").gameObject;
 		}
