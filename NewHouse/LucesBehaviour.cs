@@ -440,7 +440,7 @@ public class LucesBehaviour : MonoBehaviour
 		{
 			luzpiscina1.SetActive(false);
 		}
-		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.root.position) <= 60f)
+		if (Vector3.Distance(GameObject.Find("PLAYER").transform.position, transform.root.position) <= 60f)
 		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		foreach (RaycastHit hit in array)
