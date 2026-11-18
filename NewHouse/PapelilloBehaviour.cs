@@ -1011,12 +1011,15 @@ public class PapelilloBehaviour : MonoBehaviour
 			{
 				barbacoa = true;
 			}
-			RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
+			if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.position) <= 10f)
+		{
+		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 			foreach (RaycastHit hit in array)
 			{
 				Rayservicio2(hit);
 				Rayservicio4(hit);
 			}
+		}
 		}
 	}
 }
