@@ -160,10 +160,13 @@ public class FileteBehaviour : MonoBehaviour
 		{
 			((MonoBehaviour)this).StopCoroutine(Comervalue());
 		}
+		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.position) <= 10f)
+		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		foreach (RaycastHit hit in array)
 		{
 			RayBistec(hit);
+		}
 		}
 		toshow = ((Component)((Component)this).transform.FindChild("Raw_meat")).GetComponent<Renderer>().material.color;
 		if (podrido)
