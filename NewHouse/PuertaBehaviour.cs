@@ -284,6 +284,8 @@ public class PuertaBehaviour : MonoBehaviour
 
 	public bool loaded;
 
+	private bool loading;
+
 	private void Start()
 	{
 		pivotpuertavalla = ((Component)((Component)this).transform.FindChild("valla/puertavallacompleta/pivotpuertavalla")).transform;
@@ -404,6 +406,7 @@ public class PuertaBehaviour : MonoBehaviour
 		puertavallagarageopen = false;
 		yield return (object)new WaitForSeconds(4f);
 		Load();
+		loading = false;
 	}
 
 	private void Update()
@@ -418,10 +421,13 @@ public class PuertaBehaviour : MonoBehaviour
 		{
 			return;
 		}
-		if (!loaded)
+		if (!loaded && !loading)
 		{
+			loading = true;
 			((MonoBehaviour)this).StartCoroutine(Espera());
 		}
+		if (Vector3.Distance(((Component)GameObject.Find("PLAYER")).transform.position, transform.root.position) <= 60f)
+		{
 		RaycastHit[] array = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1.5f);
 		foreach (RaycastHit hit in array)
 		{
@@ -430,6 +436,7 @@ public class PuertaBehaviour : MonoBehaviour
 				Raypuertas(hit);
 				Raypuertasinteriores(hit);
 			}
+		}
 		}
 		if (root.vendido)
 		{
