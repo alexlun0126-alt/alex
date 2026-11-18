@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout modified NewHouse source
         uses: actions/checkout@v4
@@ -27,20 +27,15 @@ jobs:
           path: _reference_source
 
       - name: Prepare reference assemblies
-        shell: pwsh
+        shell: bash
         run: |
-          New-Item -ItemType Directory -Force refs | Out-Null
-          Copy-Item _reference_source/Assembly-CSharp.dll refs/
-          Copy-Item _reference_source/UnityEngine.dll refs/
-          Copy-Item _reference_source/MSCLoader.dll refs/
-          Copy-Item _reference_source/PlayMaker.dll refs/
-          Copy-Item _reference_source/cInput.dll refs/
-          Get-ChildItem refs | Select-Object Name, Length
-
-      - name: Install .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
+          mkdir -p refs
+          cp _reference_source/Assembly-CSharp.dll refs/
+          cp _reference_source/UnityEngine.dll refs/
+          cp _reference_source/MSCLoader.dll refs/
+          cp _reference_source/PlayMaker.dll refs/
+          cp _reference_source/cInput.dll refs/
+          ls -lh refs
 
       - name: Build NewHouse
         run: dotnet build NewHouse.csproj --configuration Release
