@@ -25,6 +25,13 @@ jobs:
         with:
           ref: main
           path: _reference_source
+          sparse-checkout: |
+            Assembly-CSharp.dll
+            UnityEngine.dll
+            MSCLoader.dll
+            PlayMaker.dll
+            cInput.dll
+          sparse-checkout-cone-mode: false
 
       - name: Prepare reference assemblies
         shell: bash
