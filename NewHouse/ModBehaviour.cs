@@ -83,7 +83,52 @@ public class ModBehaviour : MonoBehaviour
 
 	private void LoadAssets()
 	{
-		Object.Instantiate<GameObject>(m_bundle.LoadAsset<GameObject>("caseron")).AddComponent<CasaBehaviour>();
+		GameObject house = Object.Instantiate<GameObject>(m_bundle.LoadAsset<GameObject>("caseron"));
+		OptimizeStaticGeometry(house);
+		house.AddComponent<CasaBehaviour>();
+	}
+
+	private void OptimizeStaticGeometry(GameObject house)
+	{
+		MeshRenderer[] renderers = house.GetComponentsInChildren<MeshRenderer>(true);
+		int batchable = 0;
+
+		foreach (MeshRenderer renderer in renderers)
+		{
+			if ((Object)(object)renderer == (Object)null || (Object)(object)renderer.GetComponent<MeshFilter>() == (Object)null)
+			{
+				continue;
+			}
+
+			bool dynamicParent = false;
+			Transform current = renderer.transform;
+			while ((Object)(object)current != (Object)null && current != house.transform)
+			{
+				if ((Object)(object)current.GetComponent<MonoBehaviour>() != (Object)null ||
+					(Object)(object)current.GetComponent<Rigidbody>() != (Object)null ||
+					(Object)(object)current.GetComponent<Animator>() != (Object)null)
+				{
+					dynamicParent = true;
+					break;
+				}
+				current = current.parent;
+			}
+
+			if (dynamicParent)
+			{
+				continue;
+			}
+
+			renderer.gameObject.isStatic = true;
+			batchable++;
+		}
+
+		if (batchable > 1)
+		{
+			StaticBatchingUtility.Combine(house);
+		}
+
+		ModConsole.Print("NewHouse static batching: " + batchable + " renderers checked.");
 	}
 
 	private void OnDestroy()
