@@ -25,7 +25,7 @@ jobs:
           git clone --depth 1 https://github.com/Razviar/assetstudio.git AssetStudio-src
           $bundlePath = 'AssetStudio-src/AssetStudio/BundleFile.cs'
           $bundleSource = Get-Content $bundlePath -Raw
-          $needle = 'blocksStream.CopyTo(file.stream, node.size);' + "`n" + '                file.stream.Position = 0;'
+          $needle = 'blocksStream.CopyTo(file.stream, node.size);'
           $inject = [string]::Join("`n", @(
             '                blocksStream.CopyTo(file.stream, node.size);',
             '                file.stream.Position = 0;',
