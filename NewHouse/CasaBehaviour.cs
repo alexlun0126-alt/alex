@@ -97,6 +97,8 @@ public class CasaBehaviour : MonoBehaviour
 
 	private PlayMakerFSM sunFsm;
 
+	private float nextHouseMaintenance;
+
 	private GameObject cajatonta;
 
 	private bool drinkRunning;
@@ -1834,7 +1836,7 @@ public class CasaBehaviour : MonoBehaviour
 	{
 		//IL_002d: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0056: Unknown result type (might be due to invalid IL or missing references)
-		if (!((Object)(object)GameObject.Find("PLAYER") != (Object)null))
+		if ((Object)(object)Player == (Object)null)
 		{
 			return;
 		}
@@ -1842,15 +1844,14 @@ public class CasaBehaviour : MonoBehaviour
 		{
 			if (playerspawn)
 			{
-				if (activado)
+				Color targetColor = activado ? Color.red : Color.green;
+				if (estado.material.color != targetColor)
 				{
-					estado.material.color = Color.red;
-					((Component)this).GetComponent<ElectricidadBehaviour>().electricidadon = false;
+					estado.material.color = targetColor;
 				}
-				if (!activado)
+				if (electricidad != null)
 				{
-					estado.material.color = Color.green;
-					((Component)this).GetComponent<ElectricidadBehaviour>().electricidadon = true;
+					electricidad.electricidadon = !activado;
 				}
 			}
 		}
@@ -1989,28 +1990,33 @@ public class CasaBehaviour : MonoBehaviour
 		}
 		if (vendido)
 		{
-			poster.SetActive(false);
-			correo.SetActive(true);
-			SetupPapel();
-			if (telecomprada)
-			{
-				SetupTele();
-			}
 			SetupNevera();
-			poster.SetActive(false);
-			correo.SetActive(true);
 		}
-		if (!vendido)
+		if (Time.time >= nextHouseMaintenance)
 		{
-			poster.SetActive(true);
-			correo.SetActive(false);
+			nextHouseMaintenance = Time.time + 0.1f;
+			if (vendido)
+			{
+				poster.SetActive(false);
+				correo.SetActive(true);
+				SetupPapel();
+				if (telecomprada)
+				{
+					SetupTele();
+				}
+			}
+			else
+			{
+				poster.SetActive(true);
+				correo.SetActive(false);
+			}
+			Setupmudanza();
+			SetupPiscina();
+			SetupRadio();
+			SetupTelevision();
+			SetupSauna();
+			SetupBarbacoa();
 		}
-		Setupmudanza();
-		SetupPiscina();
-		SetupRadio();
-		SetupTelevision();
-		SetupSauna();
-		SetupBarbacoa();
 		SetupEdicion();
 	}
 
