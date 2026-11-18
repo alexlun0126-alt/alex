@@ -354,7 +354,7 @@ public class BolsaNewBehaviour : MonoBehaviour
 		//IL_1315: Unknown result type (might be due to invalid IL or missing references)
 		//IL_1321: Unknown result type (might be due to invalid IL or missing references)
 		RaycastHit val = default;
-		if (!((Object)(object)GameObject.Find("PLAYER") != (Object)null) || !Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), ref val, 1f) || !((Object)(object)((Component)val.collider).gameObject == (Object)(object)((Component)this).gameObject))
+		if (!((Object)(object)GameObject.Find("PLAYER") != (Object)null) || !Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out val, 1f) || !((Object)(object)((Component)val.collider).gameObject == (Object)(object)((Component)this).gameObject))
 		{
 			return;
 		}
